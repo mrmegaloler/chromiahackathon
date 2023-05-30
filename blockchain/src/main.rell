@@ -1,8 +1,23 @@
 module;
 
-object my_name {
-  mutable name= "World";
- }
+entity User {
+    pubkey: pubkey;
+    name: text;
+    email: text;
+}
+
+entity Ticket {
+   id: integer;
+   user: User; // linking the Ticket to the User
+   event: Event; // linking the Ticket to the Event
+   description: text; 
+}
+entity Event {
+    id: integer;
+    name: text;
+    description: text;
+    date: timestamp;
+}
 
 operation set_name(name) {
   my_name.name = name;

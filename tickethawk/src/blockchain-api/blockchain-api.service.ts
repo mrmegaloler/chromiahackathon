@@ -1,15 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 import * as pcl from 'postchain-client';
-import {
-  GtxClient,
-  Itransaction,
-} from 'postchain-client/built/src/gtx/interfaces';
+import { GtxClient } from 'postchain-client/built/src/gtx/interfaces';
 
 @Injectable()
 export class BlockchainApiService implements OnModuleInit {
   private gtx: GtxClient; // Store the gtx client as an instance property
-  private tx: Itransaction;
   //Key pair
   private adminPubkey = Buffer.from(
     '031b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f',
@@ -40,4 +36,12 @@ export class BlockchainApiService implements OnModuleInit {
     tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
     await tx.postAndWaitConfirmation(); //Post to blockchain node
   }
+
+  //TODO
+  //Query for getting events
+  //Query for getting tickets for event
+  //Operation for changing status of event
+
+  //We need to use the backend for handling the initial transaction of the ticket from the admin user to
+  //The first real user. Everything else can be handled by the client library in the frontend.
 }

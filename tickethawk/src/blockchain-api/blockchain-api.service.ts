@@ -1,4 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
+import { randomBytes } from 'crypto';
 import * as pcl from 'postchain-client';
 import {
   GtxClient,
@@ -35,6 +36,7 @@ export class BlockchainApiService implements OnModuleInit {
     const tx = this.gtx.newTransaction([this.adminPubkey]);
     console.log('adding name', name);
     tx.addOperation('set_name', name);
+    tx.addOperation('nop', randomBytes(12));
     tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
     await tx.postAndWaitConfirmation(); //Post to blockchain node
   }

@@ -1,6 +1,16 @@
 module;
 import auth.*;
 
+enum TICKET_STATUS {
+  CREATED,
+  TRANSFERRED,
+  REDEEMED
+}
+
+struct module_args {
+  admin_key: pubkey;
+}
+
 entity user {
     key pubkey: pubkey;
     name: text;
@@ -9,7 +19,8 @@ entity user {
 
 entity ticket {
    mutable user: user; // linking the Ticket to the User
-   event: event; // linking the Ticket to the Event
+   mutable status: TICKET_STATUS = TICKET_STATUS.CREATED; 
+   event; // linking the Ticket to the Event
    description: text; 
 }
 entity event {
@@ -35,6 +46,11 @@ return ticket @ { .rowid == id } (.user.name);
 
 query get_my_tickets(pubkey): list<rowid> {
   return ticket @* { .user.pubkey == pubkey } (.rowid);
+}
+
+operation transfer_ticket(sender: user, receiver: user, ticket: ticket){
+  require(op_context.is_signer(ticket.user.pubkey));
+  update ticket.user;
 }
 
 operation create_user(token: session_token, name: text, email: text){

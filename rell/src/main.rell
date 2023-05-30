@@ -18,7 +18,7 @@ entity user {
 }
 
 entity ticket {
-   mutable user: user; // linking the Ticket to the User
+   mutable user; // linking the Ticket to the User
    mutable status: TICKET_STATUS = TICKET_STATUS.CREATED; 
    event; // linking the Ticket to the Event
    description: text; 
@@ -48,9 +48,11 @@ query get_my_tickets(pubkey): list<rowid> {
   return ticket @* { .user.pubkey == pubkey } (.rowid);
 }
 
-operation transfer_ticket(sender: user, receiver: user, ticket: ticket){
+query hello_world() = "Hello %s!".format("HELLO");
+
+operation transfer_ticket(receiver: pubkey, ticket: ticket){
   require(op_context.is_signer(ticket.user.pubkey));
-  update ticket.user;
+  update ticket (user = user@{receiver});
 }
 
 operation create_user(token: session_token, name: text, email: text){
@@ -59,4 +61,3 @@ operation create_user(token: session_token, name: text, email: text){
   create user (pubkey, name, email);
 }
 
-query hello_world() = "Hello %s!".format("HELLO");

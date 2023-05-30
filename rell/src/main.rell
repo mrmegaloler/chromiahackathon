@@ -1,0 +1,46 @@
+module;
+import auth.*;
+
+entity user {
+    key pubkey: pubkey;
+    name: text;
+    email: text;
+}
+
+entity ticket {
+   mutable user: user; // linking the Ticket to the User
+   event: event; // linking the Ticket to the Event
+   description: text; 
+}
+entity event {
+    name: text;
+    description: text;
+    date: timestamp;
+    location: text;
+}
+
+operation create_event (token: session_token, event_name: text, event_description: text, event_location: text, event_timestamp: timestamp, amount: integer) {
+  val pubkey = validate_session(token);
+  require(pubkey);
+  val admin_user = user@{pubkey};
+  val event = create event (name = "beyonce", description = "concert", location = event_location,  date = event_timestamp);
+  for(x in range(amount)){
+    create ticket (admin_user, event, "concert");
+  }
+}
+
+query get_ticket_owner(id: rowid): text {
+return ticket @ { .rowid == id } (.user.name);
+}
+
+query get_my_tickets(pubkey): list<rowid> {
+  return ticket @* { .user.pubkey == pubkey } (.rowid);
+}
+
+operation create_user(token: session_token, name: text, email: text){
+  val pubkey = validate_session(token);
+  require(pubkey);
+  create user (pubkey, name, email);
+}
+
+query hello_world() = "Hello %s!".format("HELLO");

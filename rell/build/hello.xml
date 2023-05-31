@@ -23,6 +23,17 @@
             </entry>
             <entry key="rell">
                 <dict>
+                    <entry key="moduleArgs">
+                        <dict>
+                            <entry key="main">
+                                <dict>
+                                    <entry key="admin_key">
+                                        <string>12312312312312</string>
+                                    </entry>
+                                </dict>
+                            </entry>
+                        </dict>
+                    </entry>
                     <entry key="modules">
                         <array>
                             <string>main</string>
@@ -97,39 +108,79 @@ function validate_session(token: session_token): pubkey? {
                                 <string>module;
 import auth.*;
 
+enum TICKET_STATUS {
+  CREATED,
+  TRANSFERRED,
+  REDEEMED
+}
+
+struct module_args {
+  admin_key: pubkey;
+}
+
 entity user {
-    pubkey: pubkey;
+    key pubkey: pubkey;
     name: text;
     email: text;
 }
 
 entity ticket {
-   id: integer;
-   user: user; // linking the Ticket to the User
-   event: event; // linking the Ticket to the Event
+   mutable user; // linking the Ticket to the User
+   mutable status: TICKET_STATUS = TICKET_STATUS.CREATED; 
+   event; // linking the Ticket to the Event
    description: text; 
 }
 entity event {
-    id: integer;
     name: text;
     description: text;
     date: timestamp;
+    location: text;
 }
 
-// operation create_channel (token: session_token, channel_name: event) {
-//   val pubkey = validate_session(token);
-//   require(pubkey);
-//   val admin_user = user@{pubkey};
-//   deduct_balance(admin_user, 100);
-//   val channel = create channel (admin_user, channel_name);
-//   create channel_member (channel, admin_user);
+operation create_event (token: session_token, event_name: text, event_description: text, event_location: text, event_timestamp: timestamp, amount: integer) {
+  val pubkey = validate_session(token);
+  require(pubkey);
+  val admin_user = user@{pubkey};
+  val event = create event (name = event_name, description = event_description, location = event_location,  date = event_timestamp);
+  for(x in range(amount)){
+    create ticket (admin_user, event, "concert");
+  }
+}
+
+query get_ticket_owner(id: rowid): text {
+return ticket @ { .rowid == id } (.user.name);
+}
+
+query get_my_tickets(pubkey): list&lt;rowid&gt; {
+  return ticket @* { .user.pubkey == pubkey } (.rowid);
+}
+
+query get_events(): list&lt;event&gt; {
+  return event @* {};
+}
+
+// query get_available_tickets_for_event(event): integer {
+//   return ticket @* { .event == event } (@sum 1)
 // }
 
-operation create_user(pubkey: pubkey, name: text, email: text){
-
+operation transfer_ticket(receiver: pubkey, ticket: ticket){
+  require(op_context.is_signer(ticket.user.pubkey));
+  update ticket (user = user@{receiver});
 }
 
-// query hello_world() = "Hello %s!".format(my_name.name);
+operation create_user(token: session_token, name: text, email: text){
+  val pubkey = validate_session(token);
+  require(pubkey);
+  create user (pubkey, name, email);
+}
+
+  //TODO
+  //Query for getting tickets for event
+  //Operation for changing status of event
+
+  //We need to use the backend for handling the initial transaction of the ticket from the admin user to
+  //The first real user. Everything else can be handled by the client library in the frontend.
+
 </string>
                             </entry>
                         </dict>

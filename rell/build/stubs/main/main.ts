@@ -42,6 +42,16 @@ export async function getUser(gtxClient: GtxClient,
 	return await gtxClient.query("get_user", {pubkey: pubkey})
 }
 
+export type GetAllUsersReturnType = {
+	id: number;
+	name: string;
+	email: string;
+};
+export async function getAllUsers(gtxClient: GtxClient,
+	pubkey: Buffer): Promise<GetAllUsersReturnType[]> {
+	return await gtxClient.query("get_all_users", {pubkey: pubkey})
+}
+
 export function createEventOperation(tx: Itransaction,
 	eventName: string,
 	eventDescription: string,

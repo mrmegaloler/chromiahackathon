@@ -52,4 +52,9 @@ export class AppController {
       Number(eventId),
     );
   }
+
+  @Get('/getAllUsers')
+  async getAllUsers(): Promise<any> {
+    return await this.blockchainApi.getAllUsers();
+  }
 }

@@ -165,10 +165,16 @@ query get_events(): list&lt;(id: rowid, name: text,
 }
 
 query get_available_tickets_for_event(event): integer {
-  return ticket @ { .event == event } (@sum 1);
+  return ticket @ { .event == event and .user.pubkey != chain_context.args.admin_key} (@sum 1);
 }
 
-query get_user(pubkey): (id: rowid, name: text, email: text) = user @ { pubkey } (
+query get_user(pubkey): (id: rowid, name: text, email: text)? = user @? { pubkey } (
+  id =  .rowid,
+  name = .name,
+  email = .email
+);
+
+query get_all_users(): list&lt;(id: rowid, name: text, email: text)&gt; = user @* {} (
   id =  .rowid,
   name = .name,
   email = .email

@@ -29,6 +29,12 @@ export type GetUserReturnType = {
   name: string;
   email: string;
 };
+
+export type GetAllUsersReturnType = {
+  id: number;
+  name: string;
+  email: string;
+};
 @Injectable()
 export class BlockchainApiService implements OnModuleInit {
   private gtx: GtxClient; // Store the gtx client as an instance property
@@ -45,7 +51,7 @@ export class BlockchainApiService implements OnModuleInit {
   onModuleInit() {
     const nodeApiUrl = 'http://localhost:7740/'; //Using default postchain node REST API port
     const blockchainRID =
-      '9C3CE5185644E4C75F590ABB34B3418E4E77901F769A2EAE5082D04E3102F1FA'; //Dapp Blockchain RID
+      '1C6D075B44D6D248EC7D2F73C8283103E29332A65001AF00833124880C808277'; //Dapp Blockchain RID
     const rest = pcl.restClient.createRestClient([nodeApiUrl], blockchainRID);
     this.gtx = pcl.gtxClient.createClient(rest, blockchainRID, ['set_name']); //gtx Client connection
   }
@@ -101,5 +107,21 @@ export class BlockchainApiService implements OnModuleInit {
 
   async getUser(pubkey: Buffer): Promise<GetUserReturnType> {
     return await this.gtx.query('get_user', { pubkey: pubkey });
+  }
+
+  async getAllUsers(): Promise<GetAllUsersReturnType[]> {
+    return await this.gtx.query('get_all_users');
+  }
+
+  async transferTicketOperation(
+    receiver: Buffer,
+    ticket: number,
+  ): Promise<void> {
+    const tx = this.gtx.newTransaction([this.adminPubkey]);
+    tx.addOperation('transfer_ticket', receiver, ticket);
+  }
+
+  async getMyTickets(pubkey: Buffer): Promise<number[]> {
+    return await this.gtx.query('get_my_tickets', { pubkey: pubkey });
   }
 }

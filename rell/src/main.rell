@@ -23,6 +23,7 @@ entity ticket {
    event; // linking the Ticket to the Event
    description: text; 
 }
+
 entity event {
     name: text;
     description: text;
@@ -56,6 +57,9 @@ query get_events(): list<event> {
 query get_available_tickets_for_event(event): integer {
   return ticket @ { .event == event } (@sum 1);
 }
+
+// Hello world query
+query hello_world() = "Hello  %s!".format("Netlight");
 
 operation transfer_ticket(receiver: pubkey, ticket: ticket){
   require(op_context.is_signer(ticket.user.pubkey));

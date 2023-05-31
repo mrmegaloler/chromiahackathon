@@ -130,6 +130,7 @@ entity ticket {
    event; // linking the Ticket to the Event
    description: text; 
 }
+
 entity event {
     name: text;
     description: text;
@@ -140,6 +141,7 @@ entity event {
 operation create_event (token: session_token, event_name: text, event_description: text, event_location: text, event_timestamp: timestamp, amount: integer) {
   val pubkey = validate_session(token);
   require(pubkey);
+  require(pubkey == chain_context.args.admin_key);
   val admin_user = user@{pubkey};
   val event = create event (name = event_name, description = event_description, location = event_location,  date = event_timestamp);
   for(x in range(amount)){
@@ -159,9 +161,12 @@ query get_events(): list&lt;event&gt; {
   return event @* {};
 }
 
-// query get_available_tickets_for_event(event): integer {
-//   return ticket @* { .event == event } (@sum 1)
-// }
+query get_available_tickets_for_event(event): integer {
+  return ticket @ { .event == event } (@sum 1);
+}
+
+// Hello world query
+query hello_world() = "Hello  %s!".format("Netlight");
 
 operation transfer_ticket(receiver: pubkey, ticket: ticket){
   require(op_context.is_signer(ticket.user.pubkey));

@@ -3,7 +3,7 @@ import { randomBytes } from 'crypto';
 import * as pcl from 'postchain-client';
 import { GtxClient } from 'postchain-client/built/src/gtx/interfaces';
 
-@Injectable()
+// @Injectable()
 export class BlockchainApiService implements OnModuleInit {
   private gtx: GtxClient; // Store the gtx client as an instance property
   //Key pair

@@ -57,4 +57,13 @@ export class AppController {
   async getAllUsers(): Promise<any> {
     return await this.blockchainApi.getAllUsers();
   }
+
+  @Get('/myTickets')
+  async getMyTickets(): Promise<any> {
+    return await this.blockchainApi.getMyTickets(
+      Buffer.from(
+        '0101010101010101010101010101010101010101010101010101010101010101',
+      ),
+    );
+  }
 }

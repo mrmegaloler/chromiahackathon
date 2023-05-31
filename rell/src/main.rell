@@ -93,7 +93,6 @@ operation create_user(token: session_token, name: text, email: text){
 operation create_user_admin(name: text, email: text){
   require(op_context.is_signer(chain_context.args.admin_key));
   create user (chain_context.args.admin_key, name, email);
-
 }
 
   //TODO

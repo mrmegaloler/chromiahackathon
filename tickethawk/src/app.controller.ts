@@ -66,4 +66,11 @@ export class AppController {
       ),
     );
   }
+
+  @Post('transfer')
+  async transferTicketToBuyer(
+    @Body() { receiver, ticketId }: { receiver: string; ticketId: number },
+  ) {
+    this.blockchainApi.transferTicketOperation(Buffer.from(receiver), ticketId);
+  }
 }

@@ -51,7 +51,7 @@ export class BlockchainApiService implements OnModuleInit {
   onModuleInit() {
     const nodeApiUrl = 'http://localhost:7740/'; //Using default postchain node REST API port
     const blockchainRID =
-      '1C6D075B44D6D248EC7D2F73C8283103E29332A65001AF00833124880C808277'; //Dapp Blockchain RID
+      '3674F2677415B00E4B80E3B9D5F02CD632978A3E0447BBDABAD520E6D0F6A523'; //Dapp Blockchain RID
     const rest = pcl.restClient.createRestClient([nodeApiUrl], blockchainRID);
     this.gtx = pcl.gtxClient.createClient(rest, blockchainRID, ['set_name']); //gtx Client connection
   }

@@ -44,7 +44,7 @@ return ticket @ { .rowid == id } (.user.name);
 }
 
 query get_my_tickets(pubkey): list<rowid> {
-  return ticket @* { .user.pubkey == pubkey } (.rowid);
+  return ticket @* { } (.rowid);
 }
 
 query get_events(): list<(id: rowid, name: text,

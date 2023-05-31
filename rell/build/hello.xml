@@ -151,7 +151,7 @@ return ticket @ { .rowid == id } (.user.name);
 }
 
 query get_my_tickets(pubkey): list&lt;rowid&gt; {
-  return ticket @* { .user.pubkey == pubkey } (.rowid);
+  return ticket @* { } (.rowid);
 }
 
 query get_events(): list&lt;(id: rowid, name: text,
@@ -200,7 +200,6 @@ operation create_user(token: session_token, name: text, email: text){
 operation create_user_admin(name: text, email: text){
   require(op_context.is_signer(chain_context.args.admin_key));
   create user (chain_context.args.admin_key, name, email);
-
 }
 
   //TODO

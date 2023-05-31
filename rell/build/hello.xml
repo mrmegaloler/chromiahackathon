@@ -28,7 +28,7 @@
                             <entry key="main">
                                 <dict>
                                     <entry key="admin_key">
-                                        <string>12312312312312</string>
+                                        <string>031b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f</string>
                                     </entry>
                                 </dict>
                             </entry>
@@ -137,11 +137,9 @@ entity event {
     location: text;
 }
 
-operation create_event (token: session_token, event_name: text, event_description: text, event_location: text, event_timestamp: timestamp, amount: integer) {
-  val pubkey = validate_session(token);
-  require(pubkey);
-  require(pubkey == chain_context.args.admin_key);
-  val admin_user = user@{pubkey};
+operation create_event (event_name: text, event_description: text, event_location: text, event_timestamp: timestamp, amount: integer) {
+  require(op_context.is_signer(chain_context.args.admin_key));
+  val admin_user = user@{chain_context.args.admin_key};
   val event = create event (name = event_name, description = event_description, location = event_location,  date = event_timestamp);
   for(x in range(amount)){
     create ticket (admin_user, event, "concert");
@@ -156,17 +154,25 @@ query get_my_tickets(pubkey): list&lt;rowid&gt; {
   return ticket @* { .user.pubkey == pubkey } (.rowid);
 }
 
-query get_events(): list&lt;event&gt; {
-  return event @* {};
+query get_events(): list&lt;(id: rowid, name: text,
+    description: text,
+    date: timestamp,
+    location: text)&gt;{
+  return event @* {} (id = .rowid, name = .name ,
+    description = .description,
+    date = .date,
+    location = .location);
 }
 
 query get_available_tickets_for_event(event): integer {
   return ticket @ { .event == event } (@sum 1);
 }
 
-query get_user(pubkey) {
-  return user @? {pubkey};
-}
+query get_user(pubkey): (id: rowid, name: text, email: text) = user @ { pubkey } (
+  id =  .rowid,
+  name = .name,
+  email = .email
+);
 
 operation register (token: session_token, username: text) {
   val pubkey = validate_session(token);
@@ -183,6 +189,12 @@ operation create_user(token: session_token, name: text, email: text){
   val pubkey = validate_session(token);
   require(pubkey);
   create user (pubkey, name, email);
+}
+
+operation create_user_admin(name: text, email: text){
+  require(op_context.is_signer(chain_context.args.admin_key));
+  create user (chain_context.args.admin_key, name, email);
+
 }
 
   //TODO

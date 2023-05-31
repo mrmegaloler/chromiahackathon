@@ -47,17 +47,31 @@ query get_my_tickets(pubkey): list<rowid> {
   return ticket @* { .user.pubkey == pubkey } (.rowid);
 }
 
-query get_events(): list<struct<event>>{
-  return event @* {} (event.to_struct());
+query get_events(): list<(id: rowid, name: text,
+    description: text,
+    date: timestamp,
+    location: text)>{
+  return event @* {} (id = .rowid, name = .name ,
+    description = .description,
+    date = .date,
+    location = .location);
 }
 
 query get_available_tickets_for_event(event): integer {
   return ticket @ { .event == event } (@sum 1);
 }
 
-query get_user(pubkey): struct<user> {
-  return user @ {pubkey} (user.to_struct());
-}
+query get_user(pubkey): (id: rowid, name: text, email: text) = user @ { pubkey } (
+  id =  .rowid,
+  name = .name,
+  email = .email
+);
+
+query get_all_users(pubkey): list<(id: rowid, name: text, email: text)> = user @* { pubkey } (
+  id =  .rowid,
+  name = .name,
+  email = .email
+);
 
 operation register (token: session_token, username: text) {
   val pubkey = validate_session(token);
@@ -74,6 +88,12 @@ operation create_user(token: session_token, name: text, email: text){
   val pubkey = validate_session(token);
   require(pubkey);
   create user (pubkey, name, email);
+}
+
+operation create_user_admin(name: text, email: text){
+  require(op_context.is_signer(chain_context.args.admin_key));
+  create user (chain_context.args.admin_key, name, email);
+
 }
 
   //TODO

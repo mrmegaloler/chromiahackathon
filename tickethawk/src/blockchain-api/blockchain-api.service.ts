@@ -36,12 +36,4 @@ export class BlockchainApiService implements OnModuleInit {
     tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
     await tx.postAndWaitConfirmation(); //Post to blockchain node
   }
-
-  //TODO
-  //Query for getting events
-  //Query for getting tickets for event
-  //Operation for changing status of event
-
-  //We need to use the backend for handling the initial transaction of the ticket from the admin user to
-  //The first real user. Everything else can be handled by the client library in the frontend.
 }

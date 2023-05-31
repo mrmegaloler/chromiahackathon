@@ -31,11 +31,9 @@ entity event {
     location: text;
 }
 
-operation create_event (token: session_token, event_name: text, event_description: text, event_location: text, event_timestamp: timestamp, amount: integer) {
-  val pubkey = validate_session(token);
-  require(pubkey);
-  require(pubkey == chain_context.args.admin_key);
-  val admin_user = user@{pubkey};
+operation create_event (event_name: text, event_description: text, event_location: text, event_timestamp: timestamp, amount: integer) {
+  require(op_context.is_signer(chain_context.args.admin_key));
+  val admin_user = user@{chain_context.args.admin_key};
   val event = create event (name = event_name, description = event_description, location = event_location,  date = event_timestamp);
   for(x in range(amount)){
     create ticket (admin_user, event, "concert");
@@ -50,8 +48,8 @@ query get_my_tickets(pubkey): list<rowid> {
   return ticket @* { .user.pubkey == pubkey } (.rowid);
 }
 
-query get_events(): list<event> {
-  return event @* {};
+query get_events(): list<struct<event>>{
+  return event @* {} (event.to_struct());
 }
 
 query get_available_tickets_for_event(event): integer {
@@ -60,6 +58,15 @@ query get_available_tickets_for_event(event): integer {
 
 // Hello world query
 query hello_world() = "Hello  %s!".format("Netlight");
+query get_user(pubkey): struct<user> {
+  return user @ {pubkey} (user.to_struct());
+}
+
+operation register (token: session_token, username: text) {
+  val pubkey = validate_session(token);
+  require(pubkey);
+  create user (pubkey, name=username, email=username );
+}
 
 operation transfer_ticket(receiver: pubkey, ticket: ticket){
   require(op_context.is_signer(ticket.user.pubkey));

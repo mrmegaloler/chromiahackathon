@@ -167,6 +167,15 @@ query get_available_tickets_for_event(event): integer {
 
 // Hello world query
 query hello_world() = "Hello  %s!".format("Netlight");
+query get_user(pubkey) {
+  return user @? {pubkey};
+}
+
+operation register (token: session_token, username: text) {
+  val pubkey = validate_session(token);
+  require(pubkey);
+  create user (pubkey, name=username, email=username );
+}
 
 operation transfer_ticket(receiver: pubkey, ticket: ticket){
   require(op_context.is_signer(ticket.user.pubkey));

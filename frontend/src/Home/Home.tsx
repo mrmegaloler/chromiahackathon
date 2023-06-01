@@ -2,25 +2,29 @@ import "./home.css";
 import { ReactComponent as SearchIcon } from "../icons/Search.svg";
 import { ReactComponent as HamburgerIcon } from "../icons/Hamburger.svg";
 import { ReactComponent as TicketIcon } from "../icons/Ticket.svg";
+import { ReactComponent as Logo } from "../images/Logotype.svg";
 import { EventCard } from "./EventCard";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <div className="homeBackground">
       <div className="topInteractions">
-        <div className="searchWrapper">
-          <input className="searchBar" placeholder="Search" />
-          <SearchIcon className="magnifying" />
+        <Logo />
+        <div className="buttons">
+          <button className="hamburgerButton">
+            <SearchIcon className="hamburger" />
+          </button>
+          <button className="hamburgerButton">
+            <HamburgerIcon className="hamburger" />
+          </button>
         </div>
-        <button className="hamburgerButton">
-          <HamburgerIcon className="hamburger" />
-        </button>
       </div>
       <div className="dayButtons">
-        <button className="dayButton leftButton">
+        <Link className="dayButton leftButton" to="my-tickets">
           <TicketIcon />
           <p>my tickets</p>
-        </button>
+        </Link>
         <button className="dayButton rightButton">
           <TicketIcon />
           <p>my listings</p>

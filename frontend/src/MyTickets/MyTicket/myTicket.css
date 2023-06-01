@@ -1,0 +1,88 @@
+.myTicket {
+  height: 100px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.15));
+  display: flex;
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.myTicket .image {
+  position: relative;
+  width: 100px;
+}
+
+.myTicket .image .picture {
+  height: 100px;
+  background-size: cover;
+  width: 100px;
+  border-radius: 8px 0 0 8px;
+}
+
+.myTicket .image svg {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  left: calc(50% - 25px);
+  top: calc(50% - 25px);
+}
+
+.myTicket .image p {
+  position: absolute;
+  left: calc(50% - 4px);
+  top: calc(50% - 7px);
+  margin: 0;
+  color: #ffffff;
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.myTicket .image .pink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 8px 0 0 8px;
+  height: 100px;
+  width: 100px;
+  background-color: #eb266a;
+  opacity: 0.4;
+}
+
+.myTicket .eventInfo {
+  padding: 8px 12px;
+}
+
+.myTicket .eventInfo h2 {
+  margin: 0;
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  color: #2e3141;
+}
+
+.myTicket .eventInfo p {
+  margin: 0;
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 150%;
+  color: #262626;
+}
+
+.myTicket .eventInfo .pinkText {
+  margin-top: 8px;
+  color: rgba(235, 38, 106, 1) !important;
+  font-weight: 600 !important;
+}

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Event = () => {
   return (
-    <div>
+    <div className="event">
       <Link className="backButton" to="/">
         <BackArrowIcon />
       </Link>
@@ -29,17 +29,6 @@ const Event = () => {
           singer and dancer, she evolved into a multifaceted powerhouse
           performer, global music phenomenon and social provocateur with a solo
           discography that celebrates independent women.
-          <br />
-          <br />A star since she was a child, Beyoncé was destined for
-          greatness, travelling steadily on a path toward mega stardom. From a
-          talented singer and dancer, she evolved into a multifaceted powerhouse
-          performer, global music phenomenon and social provocateur with a solo
-          discography that celebrates independent women. A star since she was a
-          child, Beyoncé was destined for greatness, travelling steadily on a
-          path toward mega stardom. From a talented singer and dancer, she
-          evolved into a multifaceted powerhouse performer, global music
-          phenomenon and social provocateur with a solo discography that
-          celebrates independent women.
           <br />
           <br />A star since she was a child, Beyoncé was destined for
           greatness, travelling steadily on a path toward mega stardom. From a

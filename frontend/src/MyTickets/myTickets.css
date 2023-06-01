@@ -1,0 +1,41 @@
+.myTickets {
+  background-color: #eff4f9;
+  height: calc(100% - 32px);
+  min-height: calc(100vh - 32px);
+  width: calc(100vw - 32px);
+  padding: 16px;
+}
+
+.myTickets .topNav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.myTickets .topNav .backButton {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+
+.myTickets .topNav h1 {
+  font-family: "Proxima Nova";
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  color: #2e3141;
+}
+
+.myTickets h2 {
+  font-family: "Proxima Nova";
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  color: #2e3141;
+}

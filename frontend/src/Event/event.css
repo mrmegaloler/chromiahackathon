@@ -1,3 +1,10 @@
+.event {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 .eventImg {
   height: 254px;
   background-size: cover;
@@ -54,6 +61,8 @@
     rgba(255, 255, 255, 0.5) 2.72%,
     #ffffff 50%
   );
+  margin-top: auto;
+  min-height: 120px;
 }
 
 .buyButton {
@@ -76,7 +85,7 @@
   bottom: 0;
 }
 
-.backButton {
+.event .backButton {
   position: absolute;
   top: 16px;
   left: 16px;

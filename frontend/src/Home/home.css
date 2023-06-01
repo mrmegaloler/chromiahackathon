@@ -13,28 +13,9 @@
   gap: 10px;
 }
 
-.searchWrapper {
-  position: relative;
-  height: 40px;
-  width: 100%;
-}
-
-.searchBar {
-  border-radius: 40px;
-  height: 24px;
-  width: calc(100% - 60px);
-  border: none;
-  padding: 8px 44px 8px 16px;
-  font-size: 16px;
-  color: #424242;
-}
-
-.magnifying {
-  position: absolute;
-  right: 16px;
-  bottom: 8px;
-  height: 24px;
-  width: 24px;
+.topInteractions .buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .hamburgerButton {
@@ -65,6 +46,7 @@
   border: none;
   display: flex;
   justify-content: space-between;
+  text-decoration: none;
 }
 
 .dayButton p {

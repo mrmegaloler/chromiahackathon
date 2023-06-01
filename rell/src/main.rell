@@ -98,6 +98,16 @@ operation transfer_ticket(receiver: pubkey, ticket: ticket){
   update ticket (user = user@{receiver});
 }
 
+operation transfer_ticket_user(receiver: pubkey, ticket: ticket){
+  require(op_context.is_signer(ticket.user.pubkey));
+  update ticket (user = user@{receiver});
+}
+
+operation redeem_ticket(ticket: ticket){
+  require(op_context.is_signer(ticket.user.pubkey));
+  update ticket (status = TICKET_STATUS.REDEEMED);
+}
+
 operation create_user(token: session_token, name: text, email: text){
     val pubkey = validate_session(token);
     require(pubkey);

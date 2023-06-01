@@ -47,7 +47,7 @@ const App = () => {
     <div>
       {window.innerWidth > 600 ? (
         <DesktopView />
-      ) : (auth as any).loggedIn ? (
+      ) : auth.isLoggedIn ? (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/event" element={<Event />} />

@@ -33,6 +33,9 @@
     "wagmi": "^1.0.9",
     "web-vitals": "^2.1.4"
   },
+  "overrides": {
+    "typescript": "^5.0.4"
+  },
   "scripts": {
     "start": "craco start",
     "build": "craco build",

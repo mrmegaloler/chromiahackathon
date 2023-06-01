@@ -4,16 +4,32 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { Web3Modal } from "@web3modal/react";
+import { wagmiClient, ethereumClient } from "./walletconnect";
+import { BlockchainProvider } from "./blockchain/BlockchainContext";
+import { AuthProvider } from "./blockchain/AuthContext";
+import { WagmiConfig } from "wagmi";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
+  <BlockchainProvider>
+    <AuthProvider>
+      <WagmiConfig config={wagmiClient}>
+        <React.StrictMode>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </React.StrictMode>
+      </WagmiConfig>
+
+      <Web3Modal
+        projectId={"f6033953b278fbc5cc1a59ce45440cb7"}
+        ethereumClient={ethereumClient}
+      />
+    </AuthProvider>
+  </BlockchainProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

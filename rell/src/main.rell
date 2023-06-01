@@ -84,11 +84,11 @@ query get_all_users(): list<(id: rowid, name: text, email: text)> = user @* {} (
   email = .email
 );
 
-// operation register (token: session_token, username: text) {
-//     val pubkey = validate_session(token);
-//     require(pubkey);
-//     create user (pubkey, name=username, email=username );
-// }
+operation register (token: session_token, username: text) {
+    val pubkey = validate_session(token);
+    require(pubkey);
+    create user (pubkey, name=username, email=username );
+}
 
 operation transfer_ticket(receiver: pubkey, ticket: ticket){
   require(op_context.is_signer(ticket.user.pubkey));

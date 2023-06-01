@@ -1,12 +1,19 @@
 blockchains:
-  hello:
+  tickethawk:
     module: main
     moduleArgs:
       main:
-        admin_key: 031b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f
+        admin_key: 0205837971A6B5DA4A6DE1F89579B219528EFF8BE5FFCFBA454EFE17BDDD57CF04
 compile:
   rellVersion: 0.12.0
 test:
   modules:
     - test.arithmetic_test
     - test.data_test
+deployments:
+  testnet: #Deployment Target name
+    brid: x"8C5AB44B61934386D00A446D264810E19B3B8C0E28DF6CFF54966E7814BDCD11" #Blockchain RID for the testnet management chain
+    url: https://testnet2.chromia.dev:7740 #Target URL for one of the nodes in the testnet
+    container: roomOfSquares #Container ID
+    chains:
+      tickethawk: x"60B01AD60DD4476E2DB5141B0848B9F350D4F6F7C7F6EE5421EFC9968FF5874C"

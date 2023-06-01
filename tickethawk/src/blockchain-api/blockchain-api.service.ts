@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 import * as pcl from 'postchain-client';
+import { ChromiaClient } from 'postchain-client/built/src/chromia/interfaces';
 import {
   GtxClient,
   Itransaction,
@@ -40,22 +41,50 @@ export type GetAllUsersReturnType = {
 };
 @Injectable()
 export class BlockchainApiService implements OnModuleInit {
-  private gtx: GtxClient; // Store the gtx client as an instance property
+  private gtx: GtxClient;
+  private chromiaClient: ChromiaClient; // Store the gtx client as an instance property
+  //Key pair
+  // private adminPubkey = Buffer.from(
+  //   '031B84C5567B126440995D3ED5AABA0565D71E1834604819FF9C17F5E9D5DD078F',
+  //   'hex',
+  // );
+  // private adminPrivkey = Buffer.from(
+  //   '0101010101010101010101010101010101010101010101010101010101010101',
+  //   'hex',
+  // );
+
+  // onModuleInit() {
+  //   const nodeApiUrl = 'http://localhost:7740/'; //Using default postchain node REST API port
+  //   const blockchainRID =
+  //     '78481D05103C43E74ABACF7D0AB9F4DC046D73562B9251C8565E36DCADFB35CE'; //Dapp Blockchain RID
+  //   const rest = pcl.restClient.createRestClient([nodeApiUrl], blockchainRID);
+  //   this.gtx = pcl.gtxClient.createClient(rest, blockchainRID, ['set_name']); //gtx Client connection
+  // }
+
   //Key pair
   private adminPubkey = Buffer.from(
-    '031B84C5567B126440995D3ED5AABA0565D71E1834604819FF9C17F5E9D5DD078F',
+    '0205837971A6B5DA4A6DE1F89579B219528EFF8BE5FFCFBA454EFE17BDDD57CF04',
     'hex',
   );
   private adminPrivkey = Buffer.from(
-    '0101010101010101010101010101010101010101010101010101010101010101',
+    'E3A2CFE30D21316051A5BECCAFD942B9B7C3F2B51BFF773592BE826B6787281D',
     'hex',
   );
 
   onModuleInit() {
-    const nodeApiUrl = 'http://localhost:7740/'; //Using default postchain node REST API port
+    const nodeApiUrl = 'https://testnet2-dapps.chromia.dev:7740'; //Using default postchain node REST API port
     const blockchainRID =
-      '78481D05103C43E74ABACF7D0AB9F4DC046D73562B9251C8565E36DCADFB35CE'; //Dapp Blockchain RID
-    const rest = pcl.restClient.createRestClient([nodeApiUrl], blockchainRID);
+      '60B01AD60DD4476E2DB5141B0848B9F350D4F6F7C7F6EE5421EFC9968FF5874C'; //Dapp Blockchain RID
+    const rest = pcl.restClient.createRestClient(
+      [nodeApiUrl],
+      blockchainRID,
+      5,
+      1000,
+    );
+    this.chromiaClient = pcl.chromiaClient.chromiaClientProvider(
+      blockchainRID,
+      rest,
+    ); //gtx Client connection
     this.gtx = pcl.gtxClient.createClient(rest, blockchainRID, ['set_name']); //gtx Client connection
   }
 

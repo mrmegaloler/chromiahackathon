@@ -9,7 +9,7 @@ export const BlockchainProvider = ({ children }) => {
 
   const init = async () => {
     try {
-      const endpointPool = ["http://localhost:7740"];
+      const endpointPool = ["https://testnet2-dapps.chromia.dev:7740"];
       const blockchainRID = process.env.REACT_APP_BLOCKCHAIN_RID;
       const rest = pcl.restClient.createRestClient(
         endpointPool,

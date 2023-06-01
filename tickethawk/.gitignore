@@ -36,3 +36,4 @@ lerna-debug.log*
 
 # Auto generated .js files
 src/blockchain-api/*.js
+test/*.js

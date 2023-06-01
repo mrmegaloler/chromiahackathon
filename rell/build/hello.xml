@@ -150,8 +150,18 @@ query get_ticket_owner(id: rowid): text {
 return ticket @ { .rowid == id } (.user.name);
 }
 
-query get_my_tickets(pubkey): list&lt;rowid&gt; {
-  return ticket @* { } (.rowid);
+query get_my_tickets(pubkey): list&lt;(ticket_id: rowid, user_pubkey: pubkey, ticket_status: TICKET_STATUS, ticket_description: text, event_id: rowid, event_name: text, event_description: text, event_date: timestamp, event_location: text)&gt; {
+  return ticket @* { .user.pubkey == pubkey } (
+    ticket_id = .rowid,
+    user_pubkey = .user.pubkey,
+    ticket_status = .status,
+    ticket_description = .description,
+    event_id = .event.rowid,
+    event_name = .event.name,
+    event_description = .event.description,
+    event_date = .event.date,
+    event_location = .event.location
+  );
 }
 
 query get_events(): list&lt;(id: rowid, name: text,
@@ -188,6 +198,9 @@ operation register (token: session_token, username: text) {
 
 operation transfer_ticket(receiver: pubkey, ticket: ticket){
   require(op_context.is_signer(ticket.user.pubkey));
+  if(op_context.is_signer(chain_context.args.admin_key)){
+    update ticket (status = TICKET_STATUS.TRANSFERRED);
+  }
   update ticket (user = user@{receiver});
 }
 

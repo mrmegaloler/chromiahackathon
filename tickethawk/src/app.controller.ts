@@ -62,7 +62,8 @@ export class AppController {
   async getMyTickets(): Promise<any> {
     return await this.blockchainApi.getMyTickets(
       Buffer.from(
-        '0101010101010101010101010101010101010101010101010101010101010101',
+        '031b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f',
+        'hex',
       ),
     );
   }
@@ -71,6 +72,9 @@ export class AppController {
   async transferTicketToBuyer(
     @Body() { receiver, ticketId }: { receiver: string; ticketId: number },
   ) {
-    this.blockchainApi.transferTicketOperation(Buffer.from(receiver), ticketId);
+    this.blockchainApi.transferTicketOperation(
+      Buffer.from(receiver, 'hex'),
+      ticketId,
+    );
   }
 }

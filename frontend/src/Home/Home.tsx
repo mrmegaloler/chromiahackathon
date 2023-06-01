@@ -5,8 +5,37 @@ import { ReactComponent as TicketIcon } from "../icons/Ticket.svg";
 import { ReactComponent as Logo } from "../images/Logotype.svg";
 import { EventCard } from "./EventCard";
 import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { BlockchainContext } from "../blockchain/BlockchainContext";
+import { AuthContext } from "../blockchain/AuthContext";
+import { EventCardProps } from "./EventCard/EventCard";
+import { getEvents } from "../blockchain/new_api";
 
 const Home = () => {
+  const blockchain = useContext(BlockchainContext);
+  const auth = useContext(AuthContext);
+  const [reqEvents, setReqEvents] = useState<EventCardProps[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const events = await getEvents(
+        blockchain.gtx,
+        auth.disposableKeyPair.pubkey
+      );
+      const eventsProps = events.map((tempEvent) => ({
+        artist: tempEvent.name,
+        date: tempEvent.date.toString(),
+        eventTitle: tempEvent.name,
+        height: "small",
+        location: tempEvent.location,
+        image: "no",
+      }));
+      setReqEvents(eventsProps);
+    };
+
+    fetchData();
+  }, [blockchain.gtx, auth.disposableKeyPair.pubkey]);
+
   return (
     <div className="homeBackground">
       <div className="topInteractions">
@@ -33,57 +62,11 @@ const Home = () => {
       <h2 className="exploreTitle">Explore events</h2>
       <div className="eventList">
         <div className="eventColumn">
-          <EventCard
-            artist="Beyoncé"
-            date="May 9th"
-            eventTitle="Renaissance World Tour"
-            height="medium"
-            location="Avicii Arena"
-            image="../../images/Beyonce.jpeg"
-          />
-          <EventCard
-            artist="Beyoncé"
-            date="May 9th"
-            eventTitle="Renaissance World Tour"
-            height="small"
-            location="Avicii Arena"
-            image="../../images/Beyonce.jpeg"
-          />
-          <EventCard
-            artist="Beyoncé"
-            date="May 9th"
-            eventTitle="Renaissance World Tour"
-            height="large"
-            location="Avicii Arena"
-            image="../../images/Beyonce.jpeg"
-          />
+          {reqEvents.map((eventProps: any, index: any) => (
+            <EventCard key={index} {...eventProps} />
+          ))}
         </div>
-        <div className="eventColumn">
-          <EventCard
-            artist="Beyoncé"
-            date="May 9th"
-            eventTitle="Renaissance World Tour"
-            height="small"
-            location="Avicii Arena"
-            image="../../images/Beyonce.jpeg"
-          />
-          <EventCard
-            artist="Beyoncé"
-            date="May 9th"
-            eventTitle="Renaissance World Tour"
-            height="large"
-            location="Avicii Arena"
-            image="../../images/Beyonce.jpeg"
-          />
-          <EventCard
-            artist="Beyoncé"
-            date="May 9th"
-            eventTitle="Renaissance World Tour"
-            height="medium"
-            location="Avicii Arena"
-            image="../../images/Beyonce.jpeg"
-          />
-        </div>
+        <div className="eventColumn"></div>
       </div>
     </div>
   );

@@ -2,11 +2,11 @@ import "./eventCard.css";
 import beyonce from "../../images/Beyonce.jpeg";
 import { Link } from "react-router-dom";
 
-type EventCardProps = {
+export type EventCardProps = {
   artist: string;
   date: string;
   eventTitle: string;
-  height: "small" | "medium" | "large";
+  height: string;
   location: string;
   image: string;
 };

@@ -1,7 +1,10 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 import * as pcl from 'postchain-client';
-import { GtxClient } from 'postchain-client/built/src/gtx/interfaces';
+import {
+  GtxClient,
+  Itransaction,
+} from 'postchain-client/built/src/gtx/interfaces';
 
 export type User = {
   pubkey: Buffer;
@@ -40,7 +43,7 @@ export class BlockchainApiService implements OnModuleInit {
   private gtx: GtxClient; // Store the gtx client as an instance property
   //Key pair
   private adminPubkey = Buffer.from(
-    '031b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f',
+    '031B84C5567B126440995D3ED5AABA0565D71E1834604819FF9C17F5E9D5DD078F',
     'hex',
   );
   private adminPrivkey = Buffer.from(
@@ -51,13 +54,27 @@ export class BlockchainApiService implements OnModuleInit {
   onModuleInit() {
     const nodeApiUrl = 'http://localhost:7740/'; //Using default postchain node REST API port
     const blockchainRID =
-      '3674F2677415B00E4B80E3B9D5F02CD632978A3E0447BBDABAD520E6D0F6A523'; //Dapp Blockchain RID
+      '78481D05103C43E74ABACF7D0AB9F4DC046D73562B9251C8565E36DCADFB35CE'; //Dapp Blockchain RID
     const rest = pcl.restClient.createRestClient([nodeApiUrl], blockchainRID);
     this.gtx = pcl.gtxClient.createClient(rest, blockchainRID, ['set_name']); //gtx Client connection
   }
 
-  async helloWorld(): Promise<string> {
-    return await this.gtx.query('hello_world');
+  async createUser(
+    token: string,
+    name: string,
+    email: string,
+  ): Promise<number> {
+    const pubkey = await this.gtx.query('validate_session', { token: token });
+    if (!pubkey) {
+      throw new Error('Invalid session token');
+    }
+    const tx = this.gtx.newTransaction([pubkey]);
+    tx.addOperation('create_user', pubkey, name, email);
+    tx.addOperation('nop', randomBytes(12));
+    tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
+    await tx.postAndWaitConfirmation(); //Post to blockchain node
+
+    return 0;
   }
 
   async setNameOperation(name: string): Promise<void> {
@@ -84,15 +101,13 @@ export class BlockchainApiService implements OnModuleInit {
       eventTimestamp,
       amount,
     );
-    tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
-    await tx.postAndWaitConfirmation(); //Post to blockchain node
+    this.safeSignPostAndWaitConfirmation(tx);
   }
 
   async createUserAdminOperation(name: string, email: string): Promise<void> {
     const tx = this.gtx.newTransaction([this.adminPubkey]);
     tx.addOperation('create_user_admin', name, email);
-    tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
-    await tx.postAndWaitConfirmation(); //Post to blockchain node
+    this.safeSignPostAndWaitConfirmation(tx);
   }
 
   async getEvents(): Promise<GetEventsReturnType[]> {
@@ -119,9 +134,20 @@ export class BlockchainApiService implements OnModuleInit {
   ): Promise<void> {
     const tx = this.gtx.newTransaction([this.adminPubkey]);
     tx.addOperation('transfer_ticket', receiver, ticket);
+    this.safeSignPostAndWaitConfirmation(tx);
   }
 
   async getMyTickets(pubkey: Buffer): Promise<number[]> {
     return await this.gtx.query('get_my_tickets', { pubkey: pubkey });
+  }
+
+  async safeSignPostAndWaitConfirmation(tx: Itransaction) {
+    try {
+      tx.addOperation('nop', randomBytes(12));
+      tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
+      await tx.postAndWaitConfirmation(); //Post to blockchain node
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

@@ -109,13 +109,13 @@ function validate_session(token: session_token): pubkey? {
 import auth.*;
 
 enum TICKET_STATUS {
-  CREATED,
-  TRANSFERRED,
-  REDEEMED
+    CREATED,
+    TRANSFERRED,
+    REDEEMED
 }
 
 struct module_args {
-  admin_key: pubkey;
+    admin_key: pubkey;
 }
 
 entity user {
@@ -130,6 +130,7 @@ entity ticket {
    event; // linking the Ticket to the Event
    description: text; 
 }
+
 entity event {
     name: text;
     description: text;
@@ -147,7 +148,7 @@ operation create_event (event_name: text, event_description: text, event_locatio
 }
 
 query get_ticket_owner(id: rowid): text {
-return ticket @ { .rowid == id } (.user.name);
+    return ticket @ { .rowid == id } (.user.name);
 }
 
 query get_my_tickets(pubkey): list&lt;(ticket_id: rowid, user_pubkey: pubkey, ticket_status: TICKET_STATUS, ticket_description: text, event_id: rowid, event_name: text, event_description: text, event_date: timestamp, event_location: text)&gt; {
@@ -190,24 +191,29 @@ query get_all_users(): list&lt;(id: rowid, name: text, email: text)&gt; = user @
   email = .email
 );
 
-operation register (token: session_token, username: text) {
-  val pubkey = validate_session(token);
-  require(pubkey);
-  create user (pubkey, name=username, email=username );
-}
+// operation register (token: session_token, username: text) {
+//     val pubkey = validate_session(token);
+//     require(pubkey);
+//     create user (pubkey, name=username, email=username );
+// }
 
 operation transfer_ticket(receiver: pubkey, ticket: ticket){
+<<<<<<< HEAD
   require(op_context.is_signer(ticket.user.pubkey));
   if(op_context.is_signer(chain_context.args.admin_key)){
     update ticket (status = TICKET_STATUS.TRANSFERRED);
   }
   update ticket (user = user@{receiver});
+=======
+    require(op_context.is_signer(ticket.user.pubkey));
+    update ticket (user = user@{receiver});
+>>>>>>> 1dd7caa6b162fa72905f3ddc86e5b097fb3e22bd
 }
 
 operation create_user(token: session_token, name: text, email: text){
-  val pubkey = validate_session(token);
-  require(pubkey);
-  create user (pubkey, name, email);
+    val pubkey = validate_session(token);
+    require(pubkey);
+    create user (pubkey, name, email);
 }
 
 operation create_user_admin(name: text, email: text){
@@ -221,7 +227,6 @@ operation create_user_admin(name: text, email: text){
 
   //We need to use the backend for handling the initial transaction of the ticket from the admin user to
   //The first real user. Everything else can be handled by the client library in the frontend.
-
 </string>
                             </entry>
                         </dict>

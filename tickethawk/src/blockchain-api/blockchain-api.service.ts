@@ -43,7 +43,7 @@ export class BlockchainApiService implements OnModuleInit {
   private gtx: GtxClient; // Store the gtx client as an instance property
   //Key pair
   private adminPubkey = Buffer.from(
-    '031b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f',
+    '031B84C5567B126440995D3ED5AABA0565D71E1834604819FF9C17F5E9D5DD078F',
     'hex',
   );
   private adminPrivkey = Buffer.from(
@@ -57,6 +57,31 @@ export class BlockchainApiService implements OnModuleInit {
       '78481D05103C43E74ABACF7D0AB9F4DC046D73562B9251C8565E36DCADFB35CE'; //Dapp Blockchain RID
     const rest = pcl.restClient.createRestClient([nodeApiUrl], blockchainRID);
     this.gtx = pcl.gtxClient.createClient(rest, blockchainRID, ['set_name']); //gtx Client connection
+  }
+
+  async createUser(
+    token: string,
+    name: string,
+    email: string,
+  ): Promise<number> {
+    const pubkey = await this.gtx.query('validate_session', { token: token });
+    if (!pubkey) {
+      throw new Error('Invalid session token');
+    }
+    const tx = this.gtx.newTransaction([pubkey]);
+    tx.addOperation('create_user', pubkey, name, email);
+    tx.addOperation('nop', randomBytes(12));
+    tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
+    await tx.postAndWaitConfirmation(); //Post to blockchain node
+
+    return 0;
+  }
+
+  async setNameOperation(name: string): Promise<void> {
+    const tx = this.gtx.newTransaction([this.adminPubkey]);
+    console.log('adding name', name);
+    tx.addOperation('set_name', name);
+    tx.addOperation('nop', randomBytes(12));
   }
 
   async createEventOperation(

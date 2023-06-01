@@ -1,0 +1,43 @@
+.eventCard {
+  border-radius: 8px;
+  background-color: #ffffff;
+  text-decoration: none;
+  color: #2e3141;
+}
+
+.eventCard .eventInfo {
+  padding: 10px 8px 8px;
+}
+
+.eventInfo h3 {
+  margin: 0;
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #2e3141;
+}
+
+.eventInfo p {
+  margin: 0;
+  font-weight: 300;
+  font-size: 12px;
+}
+
+.eventImage {
+  background-size: cover;
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+  height: 100px;
+}
+
+.eventCard .small {
+  height: 100px;
+}
+
+.eventCard .medium {
+  height: 120px;
+}
+
+.eventCard .large {
+  height: 140px;
+}

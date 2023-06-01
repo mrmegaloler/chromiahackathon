@@ -1,0 +1,143 @@
+.purchaseSelection {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topTicketSection {
+  height: 24px;
+  border-bottom: 1px solid rgba(230, 230, 230, 0.52);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+}
+
+.topTicketSection p {
+  margin: 0;
+}
+
+.purchaseSelection .eventInfo {
+  padding: 24px;
+}
+
+.purchaseSelection .eventInfo h1 {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  color: #2e3141;
+  margin: 0;
+}
+
+.purchaseSelection .eventInfo p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 150%;
+  color: #262626;
+  margin: 0;
+}
+
+.purchaseSelection hr {
+  margin: 0 24px;
+  border: 1px solid rgba(229, 229, 229, 0.52);
+}
+
+.purchaseSelection .selection {
+  padding: 24px;
+}
+
+.purchaseSelection .selection h2 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  color: #2e3141;
+}
+
+.purchaseSelection .ticketType {
+  border: 1px solid rgba(33, 33, 33, 0.12);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+}
+
+.purchaseSelection .ticketType p {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.purchaseSelection .ticketType .price {
+  color: rgba(235, 38, 106, 1);
+}
+
+.purchaseSelection .ticketType button {
+  background: linear-gradient(0deg, #ffeff5, #ffeff5), #d9d9d9;
+  border-radius: 50%;
+  border: none;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.purchaseSelection .ticketType button:disabled {
+  opacity: 0.4;
+}
+
+.purchaseSelection .ticketType .numberSelection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.accordion {
+  background: #ffeff5;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.accordion .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  background: none;
+}
+
+.accordion .accordionText {
+  margin: 0;
+  color: rgba(235, 38, 106, 1);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.purchaseSelection .bottomOverlay {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.5) 2.72%,
+    #ffffff 50%
+  );
+  margin-top: auto;
+  min-height: 120px;
+}

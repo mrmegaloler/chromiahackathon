@@ -1,0 +1,91 @@
+.eventImg {
+  height: 254px;
+  background-size: cover;
+  width: 100vw;
+}
+
+.eventDetails {
+  width: calc(100vw - 48px);
+  border-radius: 24px 24px 0 0;
+  background-color: #ffffff;
+  margin-top: -48px;
+  padding: 32px 24px;
+  font-family: "Proxima Nova";
+  color: #2e3141;
+}
+
+.eventDetails h1 {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.eventDetails h2 {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 150%;
+  margin: 0;
+}
+
+.eventDetails p {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #000000;
+}
+
+.introText {
+  font-weight: 600 !important;
+  margin: 24px 0 16px !important;
+}
+
+.bottomOverlay {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.5) 2.72%,
+    #ffffff 50%
+  );
+}
+
+.buyButton {
+  background: linear-gradient(0deg, #eb266a, #eb266a), #d9d9d9;
+  height: 48px;
+  width: calc(100% - 32px);
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: "Proxima Nova";
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: -0.019em;
+  margin: 12px 16px;
+  position: absolute;
+  bottom: 0;
+}
+
+.backButton {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

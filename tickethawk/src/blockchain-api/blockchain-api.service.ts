@@ -60,6 +60,28 @@ export class BlockchainApiService implements OnModuleInit {
     return await this.gtx.query('hello_world');
   }
 
+  async getNames(): Promise<string[]> {
+    return await this.gtx.query('get_names');
+  }
+
+  async getUser(pubkey: Buffer): Promise<any> {
+    return await this.gtx.query('get_user', { pubkey: pubkey });
+  }
+
+  async createUser(token: string, name: string, email: string): Promise<number> {
+    const pubkey = await this.gtx.query('validate_session', { token: token });
+    if (!pubkey) {
+      throw new Error('Invalid session token');
+    }
+    const tx = this.gtx.newTransaction([pubkey]);
+    tx.addOperation('create_user', pubkey, name, email);
+    tx.addOperation('nop', randomBytes(12));
+    tx.sign(this.adminPrivkey, this.adminPubkey); //Sign transaction
+    await tx.postAndWaitConfirmation(); //Post to blockchain node
+  
+    return 0;
+  }
+
   async setNameOperation(name: string): Promise<void> {
     const tx = this.gtx.newTransaction([this.adminPubkey]);
     console.log('adding name', name);

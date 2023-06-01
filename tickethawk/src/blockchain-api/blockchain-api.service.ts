@@ -40,7 +40,7 @@ export class BlockchainApiService implements OnModuleInit {
   private gtx: GtxClient; // Store the gtx client as an instance property
   //Key pair
   private adminPubkey = Buffer.from(
-    '031b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f',
+    '031B84C5567B126440995D3ED5AABA0565D71E1834604819FF9C17F5E9D5DD078F',
     'hex',
   );
   private adminPrivkey = Buffer.from(
@@ -57,6 +57,7 @@ export class BlockchainApiService implements OnModuleInit {
   }
 
   async helloWorld(): Promise<string> {
+    // return 'Hello World!';
     return await this.gtx.query('hello_world');
   }
 

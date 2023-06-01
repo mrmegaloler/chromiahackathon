@@ -31,7 +31,8 @@
     "stream-browserify": "^3.0.0",
     "typescript": "^5.0.4",
     "wagmi": "^1.0.9",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.75.0"
   },
   "overrides": {
     "typescript": "^5.0.4"

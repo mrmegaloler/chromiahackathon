@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }) => {
           ),
         })
       );
+      console.log("logging in");
 
       setIsLoggedIn(true);
 

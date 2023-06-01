@@ -29,6 +29,11 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    console.log(auth.isLoggedIn);
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     const initializeApp = async () => {
       if (blockchain.gtx) {
         await auth.loginFromSession(blockchain.gtx);

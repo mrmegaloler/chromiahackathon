@@ -1,0 +1,61 @@
+module;
+
+val SESSION_LENGTH = 1200000; // 20 minutes
+val TIME_OFFSET = 300000; // 5 minutes
+
+struct session_token {
+  message: session_message;
+  signed_message: signature;
+}
+
+struct session_message {
+  prompt: text;
+  disposable_pubkey: text;
+  timestamp;
+}
+
+struct signature {
+  r: text;
+  s: text;
+  v: integer;
+}
+
+function estimate_current_time(): timestamp {
+  return op_context.last_block_time;
+}
+
+function session_msg_to_json(session_msg: session_message): text {
+  return '{"prompt":"%s","disposable_pubkey":"%s","timestamp":%s}'.format(
+    session_msg.prompt,
+    session_msg.disposable_pubkey,
+    session_msg.timestamp
+  );
+}
+
+function recover_address(message: text, sig: signature): pubkey {
+  val message_hash = keccak256(("\u0019Ethereum Signed Message:\n" + message.size().to_text() + message).to_bytes());
+  val ecrec_result = eth_ecrecover(
+    byte_array(sig.r.sub(2)),
+    byte_array(sig.s.sub(2)),
+    sig.v - 27,
+    message_hash
+  );
+  val recovered_address = keccak256(ecrec_result).sub(12);
+  return recovered_address;
+}
+
+function is_session_alive(token: session_token): boolean {
+  val current_time = estimate_current_time();
+  val signed_time = token.message.timestamp;
+  if (signed_time > current_time + TIME_OFFSET) return false;
+  if (signed_time < current_time - SESSION_LENGTH) return false;
+  return true;
+}
+
+function validate_session(token: session_token): pubkey? {
+  require(op_context.is_signer(byte_array(token.message.disposable_pubkey)));
+  val message_text = session_msg_to_json(token.message);
+  val recovered_address = recover_address(message=message_text, sig=token.signed_message);
+  if (not is_session_alive(token)) return null;
+  return recovered_address;
+}

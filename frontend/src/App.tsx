@@ -112,7 +112,10 @@ const App = () => {
             path="/buy"
             element={<Buy event={event} ticketId={ticket?.id} />}
           />
-          <Route path="/ticket" element={<Ticket myTickets={myTickets} />} />
+          <Route
+            path="/ticket"
+            element={<Ticket myTickets={myTickets} event={event} />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/transfer" element={<Transfer id={ticket?.id} />} />
         </Routes>

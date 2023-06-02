@@ -6,12 +6,14 @@ import "./ticket.css";
 import { TicketCard } from "./TicketCard";
 import { TicketEvent } from "./TicketEvent";
 import { MyTicketType } from "../MyTickets/MyTicket/MyTicket";
+import { EventType } from "../Home/EventCard/EventCard";
 
 type TicketProps = {
   myTickets: MyTicketType[];
+  event?: EventType;
 };
 
-const Ticket = ({ myTickets }: TicketProps) => {
+const Ticket = ({ myTickets, event }: TicketProps) => {
   return (
     <div className="ticket">
       <div className="topTicketSection">
@@ -21,19 +23,23 @@ const Ticket = ({ myTickets }: TicketProps) => {
         <p>My tickets</p>
       </div>
       <div className="ticketScroll">
-        {myTickets.map((ticket, index) => (
-          <TicketCard
-            artist={ticket.artist}
-            eventName={ticket.eventName}
-            location={ticket.location}
-            date={ticket.date.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })}
-            price={790}
-            key={index}
-          />
-        ))}
+        {myTickets.map((ticket, index) =>
+          ticket.eventName === event?.eventTitle ? (
+            <TicketCard
+              artist={ticket.artist}
+              eventName={ticket.eventName}
+              location={ticket.location}
+              date={ticket.date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}
+              price={790}
+              key={index}
+            />
+          ) : (
+            <></>
+          )
+        )}
       </div>
       <div className="history">
         <h3>Ticket history</h3>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ReactComponent as TicketIcon } from "../../icons/bigTicket.svg";
 import beyonce from "../../images/Beyonce.jpeg";
+import concert from "../../images/concert.jpg";
 import "./myTicket.css";
 
 export type MyTicketType = {
@@ -34,7 +35,11 @@ const MyTicket = ({ myTicket, disabled, setTicket }: MyTicketProps) => {
       <div className="image">
         <div
           className="picture"
-          style={{ backgroundImage: `url(${beyonce})` }}
+          style={
+            myTicket.artist === "Beyoncé" || myTicket.artist === "Beyonce"
+              ? { backgroundImage: `url(${beyonce})` }
+              : { backgroundImage: `url(${concert})` }
+          }
         />
         {!disabled && <div className="pink" />}
         <TicketIcon />

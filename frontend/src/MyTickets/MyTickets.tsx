@@ -18,8 +18,8 @@ const MyTickets = ({ tickets, setTicket }: MyTicketProps) => {
         </Link>
         <h1>My Tickets</h1>
       </div>
-      {tickets.map((ticket) => {
-        return <MyTicket myTicket={ticket} setTicket={setTicket} />;
+      {tickets.map((ticket, index) => {
+        return <MyTicket myTicket={ticket} setTicket={setTicket} key={index} />;
       })}
       <h2>Expired tickets</h2>
       <MyTicket

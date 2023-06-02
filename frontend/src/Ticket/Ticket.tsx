@@ -21,7 +21,7 @@ const Ticket = ({ myTickets }: TicketProps) => {
         <p>My tickets</p>
       </div>
       <div className="ticketScroll">
-        {myTickets.map((ticket) => (
+        {myTickets.map((ticket, index) => (
           <TicketCard
             artist={ticket.artist}
             eventName={ticket.eventName}
@@ -31,15 +31,9 @@ const Ticket = ({ myTickets }: TicketProps) => {
               day: "numeric",
             })}
             price={790}
+            key={index}
           />
         ))}
-        <TicketCard
-          artist="Beyoncé"
-          eventName="Renaissance World Tour"
-          location="Avicii Arena"
-          date="May 9th"
-          price={790}
-        />
       </div>
       <div className="history">
         <h3>Ticket history</h3>

@@ -64,6 +64,7 @@ const App = () => {
           id: tempEvent.id,
         }));
         setReqEvents(eventsProps);
+        setEvent(eventsProps[0]);
       };
 
       fetchData();

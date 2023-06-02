@@ -41,7 +41,7 @@ const Ticket = ({ myTickets }: TicketProps) => {
         <TicketEvent event="Bought for 790 SEK" date="2023-05-01" />
       </div>
       <hr />
-      <Link className="pinkButton" to="/">
+      <Link className="pinkButton" to="/ticket">
         <p>Sell ticket(s)</p>
         <HandIcon />
       </Link>

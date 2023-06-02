@@ -70,7 +70,6 @@ const Transfer = ({ id }: TransferProps) => {
           Transfer Ticket
         </button>
         {message && <p>{message}</p>}
-        Transfer 123
       </div>
     </div>
   );

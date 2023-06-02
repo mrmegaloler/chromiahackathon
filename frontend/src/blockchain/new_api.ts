@@ -96,3 +96,16 @@ export async function getMyTickets(
   });
   return tickets;
 }
+
+export async function getUnsoldTickets(
+  gtx: GtxClient,
+  pubkey: Buffer
+): Promise<GetMyTicketsReturnType[]> {
+  const tickets = await gtx.query("get_my_tickets", {
+    pubkey: Buffer.from(
+      "0205837971A6B5DA4A6DE1F89579B219528EFF8BE5FFCFBA454EFE17BDDD57CF04",
+      "hex"
+    ),
+  });
+  return tickets;
+}

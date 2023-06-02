@@ -7,17 +7,16 @@ import { BlockchainContext } from "./blockchain/BlockchainContext";
 
 import Login from "./Login";
 
+import { getEvents, getMyTickets } from "./blockchain/new_api";
 import { Buy } from "./Buy";
 import { DesktopView } from "./DesktopView";
 import { Event } from "./Event";
 import { Home } from "./Home";
+import { EventType } from "./Home/EventCard/EventCard";
 import { MyTickets } from "./MyTickets";
-import { Payment } from "./Payment";
+import { MyTicketType } from "./MyTickets/MyTicket/MyTicket";
 import { Ticket } from "./Ticket";
 import { Transfer } from "./Transfer";
-import { EventType } from "./Home/EventCard/EventCard";
-import { getEvents, getMyTickets } from "./blockchain/new_api";
-import { MyTicketType } from "./MyTickets/MyTicket/MyTicket";
 
 const App = () => {
   const blockchain = useContext(BlockchainContext);
@@ -109,9 +108,11 @@ const App = () => {
             path="/my-tickets"
             element={<MyTickets tickets={myTickets} setTicket={setTicket} />}
           />
-          <Route path="/buy" element={<Buy event={event} />} />
+          <Route
+            path="/buy"
+            element={<Buy event={event} ticketId={ticket?.id} />}
+          />
           <Route path="/ticket" element={<Ticket myTickets={myTickets} />} />
-          <Route path="/payment" element={<Payment />} />
           <Route path="/login" element={<Login />} />
           <Route path="/transfer" element={<Transfer id={ticket?.id} />} />
         </Routes>

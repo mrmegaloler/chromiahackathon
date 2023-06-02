@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../blockchain/AuthContext";
 import { BlockchainContext } from "../blockchain/BlockchainContext";
 import { getAvailableTicketsForEvent } from "../blockchain/new_api";
 import { EventType } from "../Home/EventCard/EventCard";
@@ -11,13 +12,18 @@ import { TicketInfo } from "./TicketInfo";
 
 type BuyProps = {
   event?: EventType;
+  ticketId?: number;
 };
 
-const Buy = ({ event }: BuyProps) => {
+const Buy = ({ event, ticketId }: BuyProps) => {
   const [openAccordion, setOpenAccordion] = useState(false);
   const blockchain = useContext(BlockchainContext);
   const [availableTickets, setAvailableTickets] = useState<number>();
   const [soldTickets, setSoldTickets] = useState<number>();
+  const sessionStored = sessionStorage.getItem("session");
+  const session = JSON.parse(sessionStored || "");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +38,38 @@ const Buy = ({ event }: BuyProps) => {
 
     fetchData();
   }, [blockchain.gtx, event?.id]);
+
+  const handlePurchase = () => {
+    const url = "http://localhost:5002/transfer";
+
+    const requestData = {
+      receiver: session?.pubKey,
+      ticketId: ticketId,
+    };
+
+    console.log(ticketId);
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error: " + response.status);
+        }
+      })
+      .then((data) => {
+        // Process the response data if needed
+        navigate("/ticket");
+      })
+      .catch((e) => {
+        console.log(e);
+        // Handle error appropriately
+      });
+  };
 
   return (
     <div className="purchaseSelection">
@@ -84,9 +122,9 @@ const Buy = ({ event }: BuyProps) => {
         </div>
       </div>
       <div className="bottomOverlay">
-        <Link className="buyButton" to="/ticket">
+        <button className="buyButton" onClick={handlePurchase}>
           Buy 1 ticket
-        </Link>
+        </button>
       </div>
     </div>
   );

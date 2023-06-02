@@ -1,0 +1,42 @@
+.ticketType {
+  border: 1px solid rgba(33, 33, 33, 0.12);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+}
+
+.ticketType p {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 120%;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.ticketType .price {
+  color: rgba(235, 38, 106, 1);
+}
+
+.ticketType button {
+  background: linear-gradient(0deg, #ffeff5, #ffeff5), #d9d9d9;
+  border-radius: 50%;
+  border: none;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ticketType button:disabled {
+  opacity: 0.4;
+}
+
+.ticketType .numberSelection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

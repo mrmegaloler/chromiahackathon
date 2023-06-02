@@ -1,27 +1,28 @@
-import "./myTicket.css";
-import beyonce from "../../images/Beyonce.jpeg";
-import { ReactComponent as TicketIcon } from "../../icons/bigTicket.svg";
 import { Link } from "react-router-dom";
+import { ReactComponent as TicketIcon } from "../../icons/bigTicket.svg";
+import beyonce from "../../images/Beyonce.jpeg";
+import "./myTicket.css";
 
-type MyTicketProp = {
+export type MyTicketType = {
   artist: string;
   eventName: string;
   location: string;
-  date: string;
-  price: number;
-  timeLeft: string;
+  date: Date;
+};
+
+type MyTicketProps = {
+  myTicket: MyTicketType;
   disabled?: boolean;
 };
 
-const MyTicket = ({
-  artist,
-  eventName,
-  location,
-  date,
-  price,
-  timeLeft,
-  disabled,
-}: MyTicketProp) => {
+const MyTicket = ({ myTicket, disabled }: MyTicketProps) => {
+  const getTimeLeft = () => {
+    const today = new Date();
+    const timeLeft = (myTicket?.date || new Date()).getTime() - today.getTime();
+    const daysLeft = Math.ceil(timeLeft / (1000 * 3600 * 24));
+    return daysLeft;
+  };
+
   return (
     <Link
       className={`myTicket ${disabled && "disabled"}`}
@@ -38,14 +39,20 @@ const MyTicket = ({
       </div>
       <div className="eventInfo">
         <h2>
-          {artist}
+          {myTicket?.artist}
           <br />
-          {eventName}
+          {myTicket?.eventName}
         </h2>
         <p>
-          {location}, {date}, {price} SEK
+          {myTicket?.location},{" "}
+          {myTicket?.date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          })}
+          , 790 SEK
         </p>
-        <p className="pinkText">Starts in {timeLeft}</p>
+        <p className="pinkText">Starts in </p>
+        {/* {getTimeLeft.toLocaleString} */}
       </div>
     </Link>
   );

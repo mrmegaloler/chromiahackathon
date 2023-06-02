@@ -1,6 +1,6 @@
 import { ReactComponent as AddIcon } from "../../icons/Add.svg";
 import { ReactComponent as RemoveIcon } from "../../icons/Remove.svg";
-import "../buy.css";
+import "./ticketInfo.css";
 
 type TicketInfoProps = {
   title: string;

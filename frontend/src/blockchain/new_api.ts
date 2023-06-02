@@ -34,6 +34,24 @@ export type GetAllUsersReturnType = {
   email: string;
 };
 
+export enum TICKETSTATUS {
+  CREATED,
+  TRANSFERRED,
+  REDEEMED,
+}
+
+export type GetMyTicketsReturnType = {
+  ticket_id: number;
+  user_pubkey: Buffer;
+  ticket_status: TICKETSTATUS;
+  ticket_description: string;
+  event_id: number;
+  event_name: string;
+  event_description: string;
+  event_date: number;
+  event_location: string;
+};
+
 export async function getEvents(
   gtx: GtxClient,
   userPubKey: Buffer
@@ -68,7 +86,8 @@ export async function transferTicketOperation(
 export async function getMyTickets(
   gtx: GtxClient,
   pubkey: Buffer
-): Promise<number[]> {
+): Promise<GetMyTicketsReturnType[]> {
   // implementation here
+  console.log(pubkey.toString());
   return await gtx.query("get_my_tickets", { pubkey: pubkey });
 }

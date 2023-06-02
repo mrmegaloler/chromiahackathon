@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 import { ReactComponent as BackArrowIcon } from "../icons/ArrowBack.svg";
-import MyTicket from "./MyTicket/MyTicket";
+import MyTicket, { MyTicketType } from "./MyTicket/MyTicket";
 import "./myTickets.css";
 
-const MyTickets = () => {
+type MyTicketProps = {
+  tickets: MyTicketType[];
+};
+
+const MyTickets = ({ tickets }: MyTicketProps) => {
+  console.log(tickets);
   return (
     <div className="myTickets">
       <div className="topNav">
@@ -12,24 +17,11 @@ const MyTickets = () => {
         </Link>
         <h1>My Tickets</h1>
       </div>
-      <MyTicket
-        artist="Beyoncé"
-        eventName="Renaissance World Tour"
-        location="Avicii Arena"
-        date="May 9th"
-        price={790}
-        timeLeft="5 days"
-      />
-      <MyTicket
-        artist="Beyoncé"
-        eventName="Renaissance World Tour"
-        location="Avicii Arena"
-        date="May 9th"
-        price={790}
-        timeLeft="5 days"
-      />
+      {tickets.map((ticket) => {
+        return <MyTicket myTicket={ticket} />;
+      })}
       <h2>Expired tickets</h2>
-      <MyTicket
+      {/* <MyTicket
         artist="Beyoncé"
         eventName="Renaissance World Tour"
         location="Avicii Arena"
@@ -37,7 +29,7 @@ const MyTickets = () => {
         price={790}
         timeLeft="5 days"
         disabled
-      />
+      /> */}
     </div>
   );
 };

@@ -5,9 +5,10 @@ import "./myTickets.css";
 
 type MyTicketProps = {
   tickets: MyTicketType[];
+  setTicket: (ticket: MyTicketType) => void;
 };
 
-const MyTickets = ({ tickets }: MyTicketProps) => {
+const MyTickets = ({ tickets, setTicket }: MyTicketProps) => {
   console.log(tickets);
   return (
     <div className="myTickets">
@@ -18,7 +19,7 @@ const MyTickets = ({ tickets }: MyTicketProps) => {
         <h1>My Tickets</h1>
       </div>
       {tickets.map((ticket) => {
-        return <MyTicket myTicket={ticket} />;
+        return <MyTicket myTicket={ticket} setTicket={setTicket} />;
       })}
       <h2>Expired tickets</h2>
       <MyTicket
@@ -27,7 +28,9 @@ const MyTickets = ({ tickets }: MyTicketProps) => {
           eventName: "Renaissance World Tour",
           location: "Avicii Arena",
           date: new Date(),
+          id: 0,
         }}
+        setTicket={setTicket}
         disabled
       />
     </div>

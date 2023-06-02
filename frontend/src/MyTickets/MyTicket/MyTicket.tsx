@@ -8,14 +8,16 @@ export type MyTicketType = {
   eventName: string;
   location: string;
   date: Date;
+  id: number;
 };
 
 type MyTicketProps = {
   myTicket: MyTicketType;
   disabled?: boolean;
+  setTicket: (ticket: MyTicketType) => void;
 };
 
-const MyTicket = ({ myTicket, disabled }: MyTicketProps) => {
+const MyTicket = ({ myTicket, disabled, setTicket }: MyTicketProps) => {
   const getTimeLeft = () => {
     const today = new Date();
     const timeLeft = today.getTime() - (myTicket?.date || new Date()).getTime();
@@ -27,6 +29,7 @@ const MyTicket = ({ myTicket, disabled }: MyTicketProps) => {
     <Link
       className={`myTicket ${disabled && "disabled"}`}
       to={disabled ? "" : "/ticket"}
+      onClick={() => setTicket(myTicket)}
     >
       <div className="image">
         <div

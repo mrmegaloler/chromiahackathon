@@ -24,6 +24,7 @@ const App = () => {
   const auth = useContext(AuthContext);
   const [reqEvents, setReqEvents] = useState<EventType[]>([]);
   const [event, setEvent] = useState<EventType>();
+  const [ticket, setTicket] = useState<MyTicketType>();
   const [myTickets, setMyTickets] = useState<MyTicketType[]>([]);
 
   useEffect(() => {
@@ -83,6 +84,7 @@ const App = () => {
           eventName: tempTickets.event_description,
           location: tempTickets.event_location,
           date: new Date(tempTickets.event_date),
+          id: tempTickets.ticket_id,
         }));
         setMyTickets(fetchedTickets);
         console.log(reqTickets);
@@ -105,13 +107,13 @@ const App = () => {
           <Route path="/event" element={<Event event={event} />} />
           <Route
             path="/my-tickets"
-            element={<MyTickets tickets={myTickets} />}
+            element={<MyTickets tickets={myTickets} setTicket={setTicket} />}
           />
           <Route path="/buy" element={<Buy event={event} />} />
           <Route path="/ticket" element={<Ticket myTickets={myTickets} />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/transfer" element={<Transfer id={event?.id} />} />
+          <Route path="/transfer" element={<Transfer id={ticket?.id} />} />
         </Routes>
       ) : (
         <Login />

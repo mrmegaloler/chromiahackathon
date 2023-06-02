@@ -57,7 +57,8 @@ export async function transferTicketOperation(
   receiver: Buffer,
   ticket: number
 ): Promise<void> {
-  const tx = gtx.newTransaction([disposableKeyPair.pubkey]);
+  console.log(disposableKeyPair);
+  const tx = gtx.newTransaction([disposableKeyPair.pubKey]);
   tx.addOperation("transfer_ticket", receiver, ticket);
   tx.addOperation("nop", crypto.randomBytes(32));
   tx.sign(disposableKeyPair.privKey, disposableKeyPair.pubKey);

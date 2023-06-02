@@ -1,13 +1,37 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BlockchainContext } from "../blockchain/BlockchainContext";
+import { getAvailableTicketsForEvent } from "../blockchain/new_api";
+import { EventType } from "../Home/EventCard/EventCard";
 import { ReactComponent as BackArrowIcon } from "../icons/ArrowBack.svg";
 import { ReactComponent as ChevronDownIcon } from "../icons/chevronDown.svg";
 import { ReactComponent as ChevronUpIcon } from "../icons/chevronUp.svg";
 import "./buy.css";
 import { TicketInfo } from "./TicketInfo";
 
-const Buy = () => {
+type BuyProps = {
+  event?: EventType;
+};
+
+const Buy = ({ event }: BuyProps) => {
   const [openAccordion, setOpenAccordion] = useState(false);
+  const blockchain = useContext(BlockchainContext);
+  const [availableTickets, setAvailableTickets] = useState<number>();
+  const [soldTickets, setSoldTickets] = useState<number>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const ticketsGone = await getAvailableTicketsForEvent(
+        blockchain.gtx,
+        event?.id || 2
+      );
+      const ticketsLeft = 10 - ticketsGone;
+      setAvailableTickets(ticketsLeft);
+      setSoldTickets(ticketsGone);
+    };
+
+    fetchData();
+  }, [blockchain.gtx, event?.id]);
 
   return (
     <div className="purchaseSelection">
@@ -20,15 +44,26 @@ const Buy = () => {
         </div>
         <div className="eventInfo">
           <h1>
-            Beyoncé
+            {event?.artist}
             <br />
-            Renaissance World Tour
+            {event?.eventTitle}
           </h1>
-          <p>Avicii Arena, May 9th</p>
+          <p>
+            {event?.location},{" "}
+            {event?.date.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
+            th
+          </p>
         </div>
         <hr />
         <div className="selection">
           <h2>Select your ticket type</h2>
+          <p className="amountOfTickets">
+            {availableTickets} available tickets out of{" "}
+            {(soldTickets || 0) + (availableTickets || 0)}
+          </p>
           <TicketInfo title="Standing ticket" price={790} amount={1} />
           <TicketInfo title="Seated ticket" price={790} amount={0} />
           <div className="accordion">

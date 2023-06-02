@@ -39,7 +39,7 @@ const Home = ({ events, setEvent }: HomeProps) => {
       <h2 className="exploreTitle">Explore events</h2>
       <div className="eventList">
         {events.map((eventProps: any, index: any) => (
-          <EventCard key={index} event={eventProps} />
+          <EventCard key={index} event={eventProps} setEvent={setEvent} />
         ))}
       </div>
     </div>

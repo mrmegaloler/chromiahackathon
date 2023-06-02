@@ -7,15 +7,17 @@ export type EventType = {
   date: Date;
   eventTitle: string;
   location: string;
+  id: number;
 };
 
 type EventCardProps = {
   event: EventType;
+  setEvent: (event: EventType) => void;
 };
 
-const EventCard = ({ event }: EventCardProps) => {
+const EventCard = ({ event, setEvent }: EventCardProps) => {
   return (
-    <Link className="eventCard" to="/event">
+    <Link className="eventCard" to="/event" onClick={() => setEvent(event)}>
       <div
         className={`eventImage ${"medium"}`}
         style={{ backgroundImage: `url(${beyonce})` }}

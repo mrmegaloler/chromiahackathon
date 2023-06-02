@@ -162,3 +162,12 @@
   position: absolute;
   bottom: 0;
 }
+
+.amountOfTickets {
+  font-family: "Proxima Nova";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 150%;
+  color: #262626;
+}

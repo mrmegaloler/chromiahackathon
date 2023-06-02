@@ -88,6 +88,11 @@ export async function getMyTickets(
   pubkey: Buffer
 ): Promise<GetMyTicketsReturnType[]> {
   // implementation here
-  console.log(pubkey.toString());
-  return await gtx.query("get_my_tickets", { pubkey: pubkey });
+  const sessionStored = sessionStorage.getItem("session");
+  const session = JSON.parse(sessionStored || "");
+
+  const tickets = await gtx.query("get_my_tickets", {
+    pubkey: Buffer.from(session.pubKey, "hex"),
+  });
+  return tickets;
 }

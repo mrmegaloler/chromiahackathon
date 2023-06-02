@@ -61,10 +61,7 @@ export class AppController {
   @Get('/myTickets')
   async getMyTickets(): Promise<any> {
     return await this.blockchainApi.getMyTickets(
-      Buffer.from(
-        '0205837971A6B5DA4A6DE1F89579B219528EFF8BE5FFCFBA454EFE17BDDD57CF04',
-        'hex',
-      ),
+      Buffer.from('D650651dBcD1395f5235DA66Ea82475FAF1B8737', 'hex'),
     );
   }
 

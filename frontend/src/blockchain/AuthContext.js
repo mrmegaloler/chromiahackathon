@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [disposableKeyPair, setDisposableKeyPair] = useState(null);
 
-  const SESSION_LENGTH = 10000; // 20 minutes
+  const SESSION_LENGTH = 12000; // 20 minutes
 
   const loginFromSession = async (gtx) => {
     const session = JSON.parse(sessionStorage.getItem("session"));

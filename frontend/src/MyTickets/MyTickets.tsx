@@ -21,15 +21,15 @@ const MyTickets = ({ tickets }: MyTicketProps) => {
         return <MyTicket myTicket={ticket} />;
       })}
       <h2>Expired tickets</h2>
-      {/* <MyTicket
-        artist="Beyoncé"
-        eventName="Renaissance World Tour"
-        location="Avicii Arena"
-        date="May 9th"
-        price={790}
-        timeLeft="5 days"
+      <MyTicket
+        myTicket={{
+          artist: "Beyoncé",
+          eventName: "Renaissance World Tour",
+          location: "Avicii Arena",
+          date: new Date(),
+        }}
         disabled
-      /> */}
+      />
     </div>
   );
 };

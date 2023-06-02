@@ -18,7 +18,7 @@ type MyTicketProps = {
 const MyTicket = ({ myTicket, disabled }: MyTicketProps) => {
   const getTimeLeft = () => {
     const today = new Date();
-    const timeLeft = (myTicket?.date || new Date()).getTime() - today.getTime();
+    const timeLeft = today.getTime() - (myTicket?.date || new Date()).getTime();
     const daysLeft = Math.ceil(timeLeft / (1000 * 3600 * 24));
     return daysLeft;
   };
@@ -51,8 +51,9 @@ const MyTicket = ({ myTicket, disabled }: MyTicketProps) => {
           })}
           , 790 SEK
         </p>
-        <p className="pinkText">Starts in </p>
-        {/* {getTimeLeft.toLocaleString} */}
+        {!disabled && (
+          <p className="pinkText">Starts in {getTimeLeft()} days</p>
+        )}
       </div>
     </Link>
   );

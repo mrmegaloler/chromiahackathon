@@ -5,8 +5,13 @@ import { ReactComponent as ArrowsIcon } from "../icons/CompareArrows.svg";
 import "./ticket.css";
 import { TicketCard } from "./TicketCard";
 import { TicketEvent } from "./TicketEvent";
+import { MyTicketType } from "../MyTickets/MyTicket/MyTicket";
 
-const Ticket = () => {
+type TicketProps = {
+  myTickets: MyTicketType[];
+};
+
+const Ticket = ({ myTickets }: TicketProps) => {
   return (
     <div className="ticket">
       <div className="topTicketSection">
@@ -16,13 +21,18 @@ const Ticket = () => {
         <p>My tickets</p>
       </div>
       <div className="ticketScroll">
-        <TicketCard
-          artist="Beyoncé"
-          eventName="Renaissance World Tour"
-          location="Avicii Arena"
-          date="May 9th"
-          price={790}
-        />
+        {myTickets.map((ticket) => (
+          <TicketCard
+            artist={ticket.artist}
+            eventName={ticket.eventName}
+            location={ticket.location}
+            date={ticket.date.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
+            price={790}
+          />
+        ))}
         <TicketCard
           artist="Beyoncé"
           eventName="Renaissance World Tour"

@@ -107,7 +107,7 @@ const App = () => {
             element={<MyTickets tickets={myTickets} />}
           />
           <Route path="/buy" element={<Buy event={event} />} />
-          <Route path="/ticket" element={<Ticket />} />
+          <Route path="/ticket" element={<Ticket myTickets={myTickets} />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/login" element={<Login />} />
           <Route path="/transfer" element={<Transfer id={event?.id} />} />

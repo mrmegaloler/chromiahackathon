@@ -2,7 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../blockchain/AuthContext";
 import { BlockchainContext } from "../blockchain/BlockchainContext";
-import { getAvailableTicketsForEvent } from "../blockchain/new_api";
+import {
+  getAvailableTicketsForEvent,
+  getUnsoldTickets,
+} from "../blockchain/new_api";
 import { EventType } from "../Home/EventCard/EventCard";
 import { ReactComponent as BackArrowIcon } from "../icons/ArrowBack.svg";
 import { ReactComponent as ChevronDownIcon } from "../icons/chevronDown.svg";
@@ -39,12 +42,16 @@ const Buy = ({ event, ticketId }: BuyProps) => {
     fetchData();
   }, [blockchain.gtx, event?.id]);
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     const url = "http://localhost:5002/transfer";
+    const tickets = await getUnsoldTickets(blockchain.gtx, session?.pubKey);
+    const ticketsForEvent = tickets.filter(
+      (ticket) => ticket.event_id === event?.id
+    );
 
     const requestData = {
       receiver: session?.pubKey,
-      ticketId: ticketId,
+      ticketId: ticketsForEvent[0].ticket_id,
     };
 
     console.log(ticketId);

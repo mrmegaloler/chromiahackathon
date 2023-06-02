@@ -41,7 +41,7 @@ const Ticket = () => {
         <p>Sell ticket(s)</p>
         <HandIcon />
       </Link>
-      <Link className="pinkButton" to="/">
+      <Link className="pinkButton" to="/transfer">
         <p>Transfer ticket(s)</p>
         <ArrowsIcon />
       </Link>

@@ -1,41 +1,18 @@
-import "./home.css";
-import { ReactComponent as SearchIcon } from "../icons/Search.svg";
+import { Link } from "react-router-dom";
 import { ReactComponent as HamburgerIcon } from "../icons/Hamburger.svg";
+import { ReactComponent as SearchIcon } from "../icons/Search.svg";
 import { ReactComponent as TicketIcon } from "../icons/Ticket.svg";
 import { ReactComponent as Logo } from "../images/Logotype.svg";
 import { EventCard } from "./EventCard";
-import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { BlockchainContext } from "../blockchain/BlockchainContext";
-import { AuthContext } from "../blockchain/AuthContext";
-import { EventCardProps } from "./EventCard/EventCard";
-import { getEvents } from "../blockchain/new_api";
+import { EventType } from "./EventCard/EventCard";
+import "./home.css";
 
-const Home = () => {
-  const blockchain = useContext(BlockchainContext);
-  const auth = useContext(AuthContext);
-  const [reqEvents, setReqEvents] = useState<EventCardProps[]>([]);
+type HomeProps = {
+  events: EventType[];
+  setEvent: (event: EventType) => void;
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const events = await getEvents(
-        blockchain.gtx,
-        auth.disposableKeyPair.pubkey
-      );
-      const eventsProps = events.map((tempEvent) => ({
-        artist: tempEvent.name,
-        date: tempEvent.date.toString(),
-        eventTitle: tempEvent.name,
-        height: "small",
-        location: tempEvent.location,
-        image: "no",
-      }));
-      setReqEvents(eventsProps);
-    };
-
-    fetchData();
-  }, [blockchain.gtx, auth.disposableKeyPair.pubkey]);
-
+const Home = ({ events, setEvent }: HomeProps) => {
   return (
     <div className="homeBackground">
       <div className="topInteractions">
@@ -61,12 +38,9 @@ const Home = () => {
       </div>
       <h2 className="exploreTitle">Explore events</h2>
       <div className="eventList">
-        <div className="eventColumn">
-          {reqEvents.map((eventProps: any, index: any) => (
-            <EventCard key={index} {...eventProps} />
-          ))}
-        </div>
-        <div className="eventColumn"></div>
+        {events.map((eventProps: any, index: any) => (
+          <EventCard key={index} event={eventProps} />
+        ))}
       </div>
     </div>
   );

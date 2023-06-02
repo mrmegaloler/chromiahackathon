@@ -76,12 +76,7 @@
 }
 
 .eventList {
-  display: flex;
-  gap: 12px;
-}
-
-.eventColumn {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
 }

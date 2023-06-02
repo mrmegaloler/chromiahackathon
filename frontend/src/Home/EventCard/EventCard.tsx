@@ -1,37 +1,37 @@
-import "./eventCard.css";
-import beyonce from "../../images/Beyonce.jpeg";
 import { Link } from "react-router-dom";
+import beyonce from "../../images/Beyonce.jpeg";
+import "./eventCard.css";
 
-export type EventCardProps = {
+export type EventType = {
   artist: string;
-  date: string;
+  date: Date;
   eventTitle: string;
-  height: string;
   location: string;
-  image: string;
 };
 
-const EventCard = ({
-  artist,
-  date,
-  eventTitle,
-  height,
-  location,
-  image,
-}: EventCardProps) => {
+type EventCardProps = {
+  event: EventType;
+};
+
+const EventCard = ({ event }: EventCardProps) => {
   return (
     <Link className="eventCard" to="/event">
       <div
-        className={`eventImage ${height}`}
+        className={`eventImage ${"medium"}`}
         style={{ backgroundImage: `url(${beyonce})` }}
       />
       <div className="eventInfo">
         <h3>
-          {artist} <br />
-          {eventTitle}
+          {event?.artist} <br />
+          {event?.eventTitle}
         </h3>
         <p>
-          {location}, {date}
+          {event?.location},{" "}
+          {event?.date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          })}
+          th
         </p>
       </div>
     </Link>

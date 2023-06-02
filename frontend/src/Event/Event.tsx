@@ -1,9 +1,14 @@
+import { Link } from "react-router-dom";
+import { EventType } from "../Home/EventCard/EventCard";
+import { ReactComponent as BackArrowIcon } from "../icons/ArrowBack.svg";
 import beyonce from "../images/Beyonce.jpeg";
 import "./event.css";
-import { ReactComponent as BackArrowIcon } from "../icons/ArrowBack.svg";
-import { Link } from "react-router-dom";
 
-const Event = () => {
+type EventProps = {
+  event?: EventType;
+};
+
+const Event = ({ event }: EventProps) => {
   return (
     <div className="event">
       <Link className="backButton" to="/">
@@ -15,10 +20,17 @@ const Event = () => {
       />
       <div className="eventDetails">
         <h1>
-          Beyoncé <br />
-          Renaissance World Tour
+          {event?.artist} <br />
+          {event?.eventTitle}
         </h1>
-        <h2>Avicii Arena, May 9th</h2>
+        <h2>
+          {event?.location},{" "}
+          {event?.date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          })}
+          th
+        </h2>
         <p className="introText">
           Known for being fierce and pushing boundaries, Queen Bey reigns with
           the power of pure female dominance

@@ -167,6 +167,7 @@ export class BlockchainApiService implements OnModuleInit {
   }
 
   async getMyTickets(pubkey: Buffer): Promise<number[]> {
+    console.log(pubkey);
     return await this.gtx.query('get_my_tickets', { pubkey: pubkey });
   }
 
